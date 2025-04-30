@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block additional_css %}
+    h1:after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: #a1887f;
+        border-radius: 3px;
+    }
+    .book-card {
+        background: #fff8e1;
+        border: 1px solid #d7ccc8;
+        transition: all 0.3s ease;
+    }
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        background: #ffecb3;
+    }
+    .book-card a {
+        color: #5d4037;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-5 position-relative">Каталог книг</h1>
+<div class="row">
+    {% for book in books %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 book-card">
+            <div class="card-body">
+                <a href="/book/{{ book.id }}" class="stretched-link text-decoration-none">{{ book.title }}</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
