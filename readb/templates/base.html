@@ -15,7 +15,7 @@
             background: linear-gradient(135deg, #6d4c41, #8d6e63);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             border-bottom: 1px solid #d7ccc8;
-            padding: 1.1rem 1rem;
+            padding: 1rem 1rem;
             min-height: 70px;
         }
         .navbar-brand {
@@ -24,7 +24,7 @@
             font-weight: bold;
             font-family: 'Palatino', serif;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-            padding: 0.5rem 1rem;
+            padding: 0.1rem 1rem;
             margin-right: 2rem;
         }
         .navbar-nav {
@@ -37,7 +37,7 @@
             border-bottom: 2px solid transparent;
             margin: 0 0.5rem;
             padding: 0.5rem 1.2rem !important;
-            font-size: 1.05rem;
+            font-size: 1.2rem;
         }
         .nav-link-custom:hover {
             background-color: rgba(255,255,255,0.1);
@@ -52,34 +52,51 @@
             border: 1px solid #d7ccc8;
             margin-top: 1.5rem;
         }
+        .btn-reg {
+            background-color: #735c54 !important;
+            color: #ffecb3 !important;
+            border: 1px solid #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        .btn-reg:hover {
+            background-color: #66514a !important;
+            border: 1px solid #1a1a1a;
+            transform: translateY(+2px);
+        }
+
         {% block additional_css %}{% endblock %}
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Foliant</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="/">Главная</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="/catalog">Каталог</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="/book-of-day">Книга дня</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="/favorites">Избранное</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="/login">Вход</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container my-4">
-        <div class="container-custom">
-            {% block content %}{% endblock %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Foliant</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/catalog">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/book-of-day">Книга дня</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/favorites">Избранное</a></li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item"><span class="navbar-text me-3">{{ current_user.username }}</span></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/logout">Выйти</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link nav-link-custom rounded" href="/login">Вход</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
+</nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<div class="container my-4">
+    <div class="container-custom">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
