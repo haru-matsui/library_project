@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import sqlalchemy
@@ -13,17 +14,17 @@ class Book(SqlAlchemyBase, SerializerMixin):
     title = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     description = sqlalchemy.Column(sqlalchemy.Text)
-    cover = sqlalchemy.Column(sqlalchemy.String)  # Путь к обложке
-    text = sqlalchemy.Column(sqlalchemy.String)  # Путь к файлу книги
+    cover = sqlalchemy.Column(sqlalchemy.String)
+    text = sqlalchemy.Column(sqlalchemy.String)
     upload_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now)
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'author': self.author,
-            'description': self.description,
-            'cover': self.cover,
-            'text': self.text,
-            'upload_date': self.upload_date
-        }
+    def get_file_size(self):
+        if os.path.exists(self.text):
+            size = os.path.getsize(self.text)
+            if size < 1024:
+                return f"{size} Б"
+            elif size < 1024 * 1024:
+                return f"{size / 1024:.1f} КБ"
+            else:
+                return f"{size / (1024 * 1024):.1f} МБ"
+        return "0 Б"

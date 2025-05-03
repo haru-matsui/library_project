@@ -3,7 +3,7 @@ import os
 
 import chardet
 from bs4 import BeautifulSoup
-from flask import Flask, render_template, redirect, url_for, flash, send_from_directory
+from flask import Flask, render_template, redirect, url_for, flash, send_from_directory, send_file
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from lxml import etree
 from werkzeug.utils import secure_filename
@@ -151,6 +151,45 @@ def read_book(book_id):
     return render_template('book.html', title=book.title, book=book, text=text)
 
 
+@app.route('/delete_book/<int:book_id>', methods=['POST'])
+@login_required
+def delete_book(book_id):
+    db_sess = db_session.create_session()
+    book = db_sess.query(Book).get(book_id)
+
+    if book:
+        try:
+            if os.path.exists(book.text):
+                os.remove(book.text)
+            if book.cover and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], 'covers', book.cover)):
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'covers', book.cover))
+        except Exception as e:
+            flash(f'Ошибка при удалении файлов: {str(e)}', 'danger')
+
+        db_sess.delete(book)
+        db_sess.commit()
+        flash('Книга успешно удалена', 'success')
+    else:
+        flash('Книга не найдена', 'danger')
+
+    return redirect(url_for('catalog'))
+
+
+@app.route('/download_book/<int:book_id>')
+def download_book(book_id):
+    db_sess = db_session.create_session()
+    book = db_sess.query(Book).get(book_id)
+    if not book or not os.path.exists(book.text):
+        flash('Файл книги не найден', 'danger')
+        return redirect(url_for('catalog'))
+
+    return send_file(
+        book.text,
+        as_attachment=True,
+        download_name=f"{book.title}.fb2"
+    )
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -158,7 +197,6 @@ def login():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.username == form.username.data).first()
 
-        # Проверяем что пользователь существует И пароль верный
         if user and user.check_password(form.password.data):
             login_user(user, remember=True)
             return redirect(url_for('index'))

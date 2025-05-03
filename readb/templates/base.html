@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} | Foliant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         body {
             background-color: #f9f5e9;
@@ -52,16 +53,30 @@
             border: 1px solid #d7ccc8;
             margin-top: 1.5rem;
         }
-        .btn-reg {
+        .btn-primary {
             background-color: #735c54 !important;
             color: #ffecb3 !important;
             border: 1px solid #1a1a1a;
             transition: all 0.3s ease;
         }
-        .btn-reg:hover {
+        .btn-primary:hover {
             background-color: #66514a !important;
             border: 1px solid #1a1a1a;
             transform: translateY(+2px);
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: white;
         }
 
         {% block additional_css %}{% endblock %}
