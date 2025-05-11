@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block additional_css %}
+.book-content {
+line-height: 1.8;
+white-space: pre-line;
+}
+.book-content p {
+margin-bottom: 1.5rem;
+}
+{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>{{ book.title }}</h1>
+    <a class="text-decoration-none" href="/catalog" style="color: #8d6e63;">← Вернуться в каталог</a>
+</div>
+<div class="book-content">{{ text }}</div>
+{% endblock %}

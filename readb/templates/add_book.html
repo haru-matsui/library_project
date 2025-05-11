@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<h2>Добавить книгу</h2>
+<form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="mb-3 ">
+        {{ form.fb2_file.label(class="form-label") }}
+        {{ form.fb2_file(class="form-control") }}
+        <div class="form-text">Выберите файл в формате FB2</div>
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}
